@@ -1,0 +1,37 @@
+﻿@page
+@model Assignment_5.Client.Pages.StdModel
+@{
+    // Pages/Index.razor.cs
+    using Microsoft.AspNetCore.Components;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Net.Http.Json;
+    using System.Threading.Tasks;
+
+public class YourCodeBehindClass : ComponentBase
+        {
+    private string name;
+    private List<YourModel> items = new List<YourModel>();
+
+    [Inject]
+    private HttpClient HttpClient { get; set; }
+
+    private async Task PostData()
+    {
+        var newItem = new YourModel { Name = name };
+
+        var response = await HttpClient.PostAsJsonAsync("/api/YourController", newItem);
+
+        if (response.IsSuccessStatusCode)
+        {
+            items.Add(newItem);
+        }
+    }
+
+    private async Task GetData()
+    {
+        items = await HttpClient.GetFromJsonAsync<List<YourModel>>("/api/YourController");
+    }
+        }
+
+}
